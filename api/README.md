@@ -32,7 +32,7 @@ This project follows the hexagonal architecture (ports and adapters) pattern:
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone git@github.com:Enzo3322/easy-panel.git
 cd task-management-api
 ```
 
