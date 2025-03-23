@@ -1,0 +1,39 @@
+class TaskRepository {
+  async create(task) {
+    throw new Error('Method not implemented');
+  }
+
+  async findById(id) {
+    throw new Error('Method not implemented');
+  }
+
+  async findByTeam(teamId) {
+    throw new Error('Method not implemented');
+  }
+
+  async findBySprint(sprintId) {
+    throw new Error('Method not implemented');
+  }
+
+  async findByAssignee(assigneeId) {
+    throw new Error('Method not implemented');
+  }
+
+  async findByStatus(teamId, status) {
+    throw new Error('Method not implemented');
+  }
+
+  async update(id, taskData) {
+    throw new Error('Method not implemented');
+  }
+
+  async updateStatus(id, status) {
+    throw new Error('Method not implemented');
+  }
+
+  async delete(id) {
+    throw new Error('Method not implemented');
+  }
+}
+
+module.exports = TaskRepository; 

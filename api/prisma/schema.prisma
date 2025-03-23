@@ -1,0 +1,84 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String     @id @default(uuid())
+  name     String
+  email    String     @unique
+  password String
+  
+  userTeams UserTeam[]
+  tasks     Task[]     @relation("TaskAssignee")
+  createdTeams Team[]  @relation("TeamCreator")
+
+  @@map("users")
+}
+
+model Team {
+  id        String     @id @default(uuid())
+  name      String
+  creatorId String
+  
+  creator   User       @relation("TeamCreator", fields: [creatorId], references: [id])
+  userTeams UserTeam[]
+  sprints   Sprint[]
+  tasks     Task[]
+
+  @@map("teams")
+}
+
+model UserTeam {
+  id      String   @id @default(uuid())
+  userId  String
+  teamId  String
+  role    String   @default("member")
+  
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  team    Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, teamId])
+  @@map("user_teams")
+}
+
+model Sprint {
+  id        String   @id @default(uuid())
+  name      String
+  startDate DateTime
+  endDate   DateTime
+  teamId    String
+  
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  tasks     Task[]
+
+  @@map("sprints")
+}
+
+enum TaskStatus {
+  TO_DO
+  IN_PROGRESS
+  DONE
+}
+
+model Task {
+  id          String     @id @default(uuid())
+  title       String
+  description String
+  status      TaskStatus @default(TO_DO)
+  startDate   DateTime?
+  endDate     DateTime?
+  assigneeId  String?
+  sprintId    String?
+  teamId      String
+  
+  assignee    User?      @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  sprint      Sprint?    @relation(fields: [sprintId], references: [id])
+  team        Team       @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@map("tasks")
+} 
